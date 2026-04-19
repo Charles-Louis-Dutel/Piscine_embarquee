@@ -6,8 +6,8 @@
 //PORTD6 GREEN
 //PORTD3 BLUE
 
-//timer 0, led B(OC0B), led G(OC0A)
-//timer 2, led R(OC2B)
+//timer 0, led R(OC0B), led G(OC0A)
+//timer 2, led B(OC2B)
 
 void init_rgb()
 {
@@ -31,8 +31,8 @@ void init_rgb()
 void set_rgb(uint8_t r, uint8_t g, uint8_t b)
 {
     OCR0A = g;
-    OCR0B = b;
-    OCR2B = r;
+    OCR0B = r;
+    OCR2B = b;
 }
 
 
