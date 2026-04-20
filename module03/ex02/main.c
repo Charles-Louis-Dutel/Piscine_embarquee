@@ -1,26 +1,34 @@
 #include <avr/io.h>
 #include <util/delay.h>
-#include <avr/interrupt.h>
 
 //PORTD5 RED
 //PORTD6 GREEN
 //PORTD3 BLUE
 
-//timer 0, led R(OC0B), led G(OC0A)
-//timer 2, led B(OC2B)
+//timer 0, LED R(OC0B), LED G(OC0A)
+//timer 2, LED B(OC2B)
 
 void init_rgb()
 {
     //reg DDRD (p.101)
     DDRD = (1 << DDD3) | (1 << DDD5) | (1 << DDD6);
 
-    //timer0
+    //On va utiliser le mode Fast PWM pour générer un signal périodique rapide
+    //En faisant varier le duty cycle on controle le temps pendant lequel on
+    //allume ou éteint chaque LED. Ca permet de faire varier l'intensité de
+    //chaque couleur pour obtenir la couleur voulue.
+
+    //Timer0
+    //Mode Fast PWM avec 0xFF en TOP et OCR0A et OCR0B en value de compare match
+    //pour le duty cycle -> WGM00/1 a 1, reg TCCR0A
+    //Non inverting mode, sortie HIGH en debut de cycle, puis LOW au compare match
+    //COM0A1 et COM0B1 a 1, reg TCCR0A;
     //reg TCCR0A (p.113)
     TCCR0A = (1 << WGM00) | (1 << WGM01) | (1 << COM0B1) | (1 << COM0A1);
     //reg TCCR0B (p.116)
     TCCR0B |= (1 << CS02);
 
-    //timer2
+    //Timer2
     //reg TCCR2A (p.162)
     TCCR2A = (1 << WGM20) | (1 << WGM21) | (1 << COM2B1);
     //reg TCCR2B (p.165)

@@ -54,6 +54,10 @@ void convert_hexa(const char *color_code)
     uint8_t g = 0;
     uint8_t b = 0;
 
+    //Chaque paire du code hexademical #RRGGBB est composé de 2 numéros.
+    //Le 1er correspond au palier de 16 (0*16, 1*16, etc...), on obtient
+    //une valeur de 0 à 240.
+    //Le 2eme est la valeur à ajouter pour aller jusqu'à 255;
     r = calculate_to_rgb(color_code[1], color_code[2]);
     g = calculate_to_rgb(color_code[3], color_code[4]);
     b = calculate_to_rgb(color_code[5], color_code[6]);
