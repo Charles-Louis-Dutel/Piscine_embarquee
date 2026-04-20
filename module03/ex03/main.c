@@ -23,7 +23,8 @@ int main()
         uart_printstr("\r\n");
         if (!check_color_code_validity(color_code))
             uart_printstr("Color format is invalide !\r\n");
+        else
+            convert_hexa(color_code);
         uart_printstr("\r\n");
-        convert_hexa(color_code);
     }
 }
