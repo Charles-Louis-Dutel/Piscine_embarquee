@@ -2,20 +2,36 @@
 
 void init_rgb(void)
 {
-    DDRD = (1 << DDD3) | (1 << DDD5) | (1 << DDD6);
+    DDRD |= (1 << DDD3) | (1 << DDD5) | (1 << DDD6);
 
-    TCCR0A = (1 << WGM00) | (1 << WGM01) | (1 << COM0A1) | (1 << COM0B1);
+    TCCR0A = (1 << WGM00) | (1 << WGM01);
     TCCR0B |= (1 << CS02);
-    TCCR2A = (1 << WGM20) | (1 << WGM21) | (1 << COM2B1);
+    TCCR2A = (1 << WGM20) | (1 << WGM21);
     TCCR2B |= (1 << CS21) | (1 << CS22);
+
+    OCR0A = 0;
+    OCR0B = 0;
+    OCR2B = 0;
 }
 
 
 void set_rgb(uint8_t r, uint8_t g, uint8_t b)
 {
-    OCR0A = g;
-    OCR0B = r;
-    OCR2B = b;
+    if (r == 0 && g == 0 && b == 0)
+    {
+        TCCR0A &= ~((1 << COM0A1) | (1 << COM0B1));
+        TCCR2A &= ~(1 << COM2B1);
+        PORTD &= ~((1 << PD3) | (1 << PD5) | (1 << PD6));
+    }
+    else
+    {
+        TCCR0A |= (1 << COM0A1) | (1 << COM0B1);
+        TCCR2A |= (1 << COM2B1);
+
+        OCR0A = g;
+        OCR0B = r;
+        OCR2B = b;
+    }
 }
 
 

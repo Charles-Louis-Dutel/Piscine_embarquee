@@ -2,6 +2,12 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
+#ifndef F_CPU
+ #define F_CPU 16000000
+#endif
+
+#define PRESCALER_DIV 256
+
 void INT0_vect(void) __attribute__((signal));
 
 volatile uint8_t interrupt_flag = 0;
@@ -24,6 +30,12 @@ void init_led(void)
 }
 
 
+void init_timer(void)
+{
+    TCCR0A = (1 << WGM01);
+}
+
+
 void init_interrupt(void)
 {
     //Permet de definir comment l'interrupt correspondant au bouton SW1 est
@@ -34,6 +46,9 @@ void init_interrupt(void)
     //Permet d'activer l'interrupt correspondant au bouton SW1
     //INT0 a 1 -> reg EIMSK (p.81)
     EIMSK = (1 << INT0);
+
+    //Active l
+    TIMSK0 = (1 << OCIE0A);
 
     SREG |= (1 << SREG_I);
 }

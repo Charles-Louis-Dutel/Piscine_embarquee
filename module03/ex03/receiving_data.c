@@ -28,6 +28,11 @@ uint8_t check_color_code_validity(const char *color_code)
     uint8_t i = 0;
 
     while (color_code[i])
+        i++;
+    if (i != 7)
+        return (0);
+    i = 0;
+    while (color_code[i])
     {
         if (i == 0 && color_code[i] != '#')
             return (0);
