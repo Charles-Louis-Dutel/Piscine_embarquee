@@ -6,17 +6,55 @@
  #define F_CPU 16000000
 #endif
 
-#define PRESCALER_DIV 256
+#define PRESCALER_DIV 64
+
+#define PRESSED 1
+#define UNPRESSED 0
 
 void INT0_vect(void) __attribute__((signal));
+void TIMER1_COMPA_vect(void) __attribute__((signal));
 
-volatile uint8_t interrupt_flag = 0;
+volatile uint8_t state = 0;
 
 void INT0_vect(void)
 {
-    interrupt_flag = 1;
+    if (state == UNPRESSED)
+        state = 1;
+    else if (state == PRESSED)
+        state = 0;
+    //Desactive interrupt du bouton
+    EIMSK = 0;
+    //Remet le compteur a 0
+    TCNT1 = 0;
+    //Clear le flag du timer
+    TIFR1 |= (1 << OCF1A);
+    //Lance le timer
+    TCCR1B |= (1 << CS10) | (1 << CS11);
 }
 
+
+void TIMER1_COMPA_vect(void)
+{
+    //Desactive le timer
+    TCCR1B &= ~((1 << CS10) | (1 << CS11));
+
+    if (state == PRESSED)
+    {
+        PORTB ^= (1 << PB0);
+        //Active l'interrupt du bouton en mode rising edge
+        EICRA = (1 << ISC00) | (1 << ISC01);
+    }
+    else if (state == UNPRESSED)
+    {
+        //Active l'interrupt du bouton en mode falling edge
+        EICRA = (1 << ISC01);
+    }
+    
+    //Clear le flag du bouton
+    EIFR |= (1 << INTF0);
+    //Active l'interrupt du bouton
+    EIMSK = (1 << INT0);
+}
 
 void init_switch(void)
 {
@@ -32,7 +70,9 @@ void init_led(void)
 
 void init_timer(void)
 {
-    TCCR0A = (1 << WGM01);
+    TCCR1B = (1 << WGM12);
+
+    OCR1A = (F_CPU/PRESCALER_DIV) * 0.02 - 1;
 }
 
 
@@ -47,8 +87,8 @@ void init_interrupt(void)
     //INT0 a 1 -> reg EIMSK (p.81)
     EIMSK = (1 << INT0);
 
-    //Active l
-    TIMSK0 = (1 << OCIE0A);
+    //Active l'interrupt du timer
+    TIMSK1 = (1 << OCIE1A);
 
     SREG |= (1 << SREG_I);
 }
@@ -57,22 +97,10 @@ int main ()
 {
     init_switch();
     init_led();
+    init_timer();
     init_interrupt();
 
     while (1)
     {
-        if (interrupt_flag == 1)
-        {
-            //Desactive l'interrupt
-            EIMSK &= ~(1 << INT0);
-            //debounce
-            _delay_ms(200);
-            PORTB ^= (1 << PB0);
-            interrupt_flag = 0;
-            //Clear le flag d'interrupt
-            EIFR |= (1 << INTF0);
-            //Réactive l'interrupt
-            EIMSK |= (1 << INT0);
-        }
     }
 }
