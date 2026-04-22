@@ -15,7 +15,7 @@ void INT0_vect(void)
     //Clear le flag du timer
     TIFR1 |= (1 << OCF1A);
     //Lance le timer
-    TCCR1B |= (1 << CS10) | (1 << CS11);
+    TCCR1B |= (1 << CS10) | (1 << CS11);    
 }
 
 
