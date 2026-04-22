@@ -13,7 +13,7 @@ void init_uart(unsigned int ubrr)
 void init_interrupt(void)
 {
     //Active interrupt Output Compare B Match
-    TIMSK1 = (1 << OCIE1A);
+    TIMSK1 = (1 << OCIE1B);
 
     //Activer l'interrupt ADC
     //ADIE a 1 -> reg ADCSRA (p.258)
@@ -52,6 +52,7 @@ void init_adc(void)
 
 void init_timer(void)
 {
+    OCR1A = (F_CPU/PRESCALER_DIV) * 0.02 - 1;
     OCR1B = (F_CPU/PRESCALER_DIV) * 0.02 - 1;
  
     TCCR1B = (1 << CS10) | (1 << CS11) | (1 << WGM12);
@@ -66,4 +67,8 @@ int main ()
     init_interrupt();
     init_adc();
     init_timer();
+
+    while (1)
+    {
+    }
 }
