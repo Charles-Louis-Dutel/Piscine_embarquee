@@ -19,9 +19,18 @@ int main()
     uart_init(ubrr);
     i2c_init();
 
-    i2c_start();
-    i2c_stop();
     while (1)
     {
+        i2c_start(WRITE);
+        _delay_ms(10);
+        i2c_write(0xAC);
+        i2c_write(0x33);
+        i2c_write(0x00);
+        i2c_stop();
+        _delay_ms(80);
+        i2c_start(READ);
+        i2c_read();
+        i2c_stop();
+        _delay_ms(100);
     }
 }

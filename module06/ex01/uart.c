@@ -37,3 +37,13 @@ void print_status(volatile uint8_t status)
     uart_tx(HEXA[low]);
     uart_printstr("\r\n");
 }
+
+
+void print_hex_value(char c)
+{
+    uint8_t low = c & 0b00001111;
+    uint8_t high = (c & 0b11110000) >> 4;
+
+    uart_tx(HEXA[high]);
+    uart_tx(HEXA[low]);
+}
