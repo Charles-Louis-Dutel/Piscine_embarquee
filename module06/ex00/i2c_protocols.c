@@ -4,6 +4,7 @@ void i2c_start(void)
 {
     //(p.225)
     //1. Send START condition
+    //TWEN -> enable TWI
     TWCR = (1 << TWINT) | (1 << TWSTA) | (1 << TWEN);
 
     //2. Wait for TWINT Flag set. This indicates that the START condition has been transmitted

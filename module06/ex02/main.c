@@ -40,7 +40,6 @@ int main()
         {
             uart_printstr("Temperature: ");
             print_decimal(temperature_mean / 3, 100);
-            //ft_putnbr(temperature_mean / 3);
             uart_printstr(".C, Humidity: ");
             print_decimal(humidity_mean / 3, 10);
             uart_printstr("%\r\n");
