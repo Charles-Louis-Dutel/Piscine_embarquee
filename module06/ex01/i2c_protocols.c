@@ -2,10 +2,10 @@
 
 void i2c_start(uint8_t mode)
 {
-    if (mode == WRITE)
-        uart_printstr("Write mode\r\n");
-    else
-        uart_printstr("Read mode\r\n");
+    // if (mode == WRITE)
+    //     uart_printstr("Write mode\r\n");
+    // else
+    //     uart_printstr("Read mode\r\n");
     //(p.225)
     //1. Send START condition
     TWCR = (1 << TWINT) | (1 << TWSTA) | (1 << TWEN);
@@ -86,6 +86,7 @@ void i2c_write(unsigned char data)
 
 void i2c_read(void)
 {
+    //Master Receiver Mode (p.229)
     uint8_t i = 0;
 
     while (i < 6)
