@@ -27,11 +27,26 @@ void uart_printstr(const char *str)
 }
 
 
-void print_hex_value(char c)
+void print_hex_value(uint8_t c)
 {
     uint8_t low = c & 0b00001111;
     uint8_t high = (c & 0b11110000) >> 4;
 
-    uart_tx(HEXA[high]);
-    uart_tx(HEXA[low]);
+    uart_tx(HEXA_MIN[high]);
+    uart_tx(HEXA_MIN[low]);
+}
+
+
+void print_adress_hexa(uint16_t adress)
+{
+    uint8_t low_0_7 = adress & 0x0F;
+    uint8_t high_0_7 = (adress >> 4) & 0x0F;
+    uint8_t low_8_15 = (adress >> 8) & 0x0F;
+    uint8_t high_8_15 = (adress >> 12) & 0x0F;
+
+    uart_printstr("0000");
+    uart_tx(HEXA_MIN[high_8_15]);
+    uart_tx(HEXA_MIN[low_8_15]);
+    uart_tx(HEXA_MIN[high_0_7]);
+    uart_tx(HEXA_MIN[low_0_7]);
 }
