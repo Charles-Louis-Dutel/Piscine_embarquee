@@ -8,7 +8,7 @@ static uint8_t parse_status_arg(void)
         uart_printstr(STATUS_ARG_ERROR);
         return (0);
     }
-    return (1);
+    return (status_command());
 }
 
 
@@ -31,8 +31,7 @@ static uint8_t parse_id_arg(void)
         }
         i++;
     }
-    //appeler la fonction pour gerer set id
-    return (1);
+    return (set_id_command());
 }
 
 
@@ -57,8 +56,7 @@ static uint8_t parse_prio_arg(void)
         }
         i++;
     }
-    //appeler la fonction pour gerer set prio
-    return (1);
+    return (set_priority_command());
 }
 
 
@@ -90,8 +88,7 @@ static uint8_t parse_tag_arg(void)
         }
         i++;
     }
-    //appeler la fonction pour gerer set tag
-    return (1);
+    return (set_tag_command());
 }
 
 

@@ -61,8 +61,12 @@ void print_adress_hexa(uint16_t adress)
 }
 
 
-void ft_putnbr(uint16_t n)
+void ft_putnbr(int64_t n)
 {
+    if (n < 0)
+    {
+
+    }
     if (n >= 0 && n <= 9)
         uart_tx(n + '0');
     else

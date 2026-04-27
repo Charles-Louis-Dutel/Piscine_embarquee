@@ -103,3 +103,59 @@ void  ft_memcopy(void *to_copy, void *dest, uint16_t size)
         i++;
     }
 }
+
+
+uint8_t ft_atoi(const char *str, uint8_t mode)
+{
+    int64_t n = 0;
+    int8_t  sign = 1;
+    uint8_t i = 0;
+
+    if (str[0] == '-')
+    {
+        i = 1;
+        sign = -1;
+    }
+    while (str[i])
+    {
+        n *= 10 + (str[i] - '0');
+        if (mode == UINT32 && n > UINT32_MAX)
+            return (0);
+        else if (mode == INT16 && (n < INT16_MIN || n > INT16_MAX))
+            return (0);
+        i++;
+    }
+    if (sign == -1)
+        n *= sign;
+    if (mode == UINT32)
+    {
+        if (is_configured == 0)
+            create_default_config();
+        current_config.node_id = n;
+    }
+    else if (mode == INT16)
+    {
+        if (is_configured == 0)
+            create_default_config();
+        current_config.priority = n;
+    }
+    return (1);
+}
+
+
+void ft_copy_and_fill_0(char *dest, char *to_copy, uint8_t size)
+{
+    uint8_t i = 0;
+    uint8_t len_to_copy = ft_strlen(to_copy);
+
+    while (i < len_to_copy)
+    {
+        dest[i] = to_copy[i];
+        i++;
+    }
+    while (i < size)
+    {
+        dest[i] = '\0';
+        i++;
+    }
+}

@@ -8,8 +8,11 @@
 
 #define UART_BAUDRATE 115200
 
+/*Parse*/
 #define HEXA "0123456789ABCDEF"
 #define HEXA_MIN "0123456789abcdef"
+#define UINT32 0
+#define INT16 1
 
 
 /*CONFIG*/
@@ -68,7 +71,7 @@ void            uart_tx(const char c);
 void            uart_printstr(const char *str);
 void            print_hex_value(uint8_t c);
 void            print_adress_hexa(uint16_t adress);
-void            ft_putnbr(uint16_t n);
+void            ft_putnbr(int64_t n);
 
 
 /*crc.*/
@@ -92,6 +95,14 @@ uint8_t         convert_data(void);
 uint8_t         check_command(void);
 
 
+/*command.c*/
+void            create_default_config(void);
+uint8_t         status_command(void);
+uint8_t         set_id_command(void);
+uint8_t         set_priority_command(void);
+uint8_t         set_tag_command(void);
+
+
 /*utils.c*/
 uint8_t         ft_is_print(unsigned char c);
 uint8_t         ft_is_hexa(unsigned char c);
@@ -102,6 +113,8 @@ uint8_t         ft_is_num(const char c);
 uint8_t         ft_is_alphanum(const char c);
 void            ft_trim(char *str);
 void            ft_memcopy(void *to_copy, void *dest, uint16_t size);
+uint8_t         ft_atoi(const char *str, uint8_t mode);
+void            ft_copy_and_fill_0(char *dest, char *to_copy, uint8_t size);
 
 
 /*manage_eeprom.c*/
