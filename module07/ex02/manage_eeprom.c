@@ -77,14 +77,14 @@ void print_eeprom_with_red(uint16_t adress, uint8_t octet_value)
 }
 
 
-uint8_t check_octet_eeprom(void)
-{
-    uint8_t octet_eeprom = read_eeprom(adress_in_uint);
+// uint8_t check_octet_eeprom(void)
+// {
+//     uint8_t octet_eeprom = read_eeprom(adress_in_uint);
 
-    // uart_printstr("Octet in eeprom : ");
-    // ft_putnbr(octet_eeprom);
-    // uart_printstr("\r\n");
-    if (octet_eeprom == octet_in_uint)
-        return (1);
-    return (0);
-}
+//     // uart_printstr("Octet in eeprom : ");
+//     // ft_putnbr(octet_eeprom);
+//     // uart_printstr("\r\n");
+//     if (octet_eeprom == octet_in_uint)
+//         return (1);
+//     return (0);
+// }

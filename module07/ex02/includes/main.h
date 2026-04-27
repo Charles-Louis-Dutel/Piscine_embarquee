@@ -11,6 +11,16 @@
 #define HEXA "0123456789ABCDEF"
 #define HEXA_MIN "0123456789abcdef"
 
+
+/*CONFIG*/
+#define SLOT_SIZE 64
+#define SLOT_0_ADDR 0
+#define SLOT_1_ADDR 64
+#define SLOT_2_ADDR 128
+#define SLOT_3_ADDR 192
+#define MAGIC 0x42CACA07
+
+
 /*ERROR MESSAGES*/
 #define BAD_ENTRY "Bad entry, please try with this format: COMMAND ARGUMENT\r\n"
 #define INVALID_COMMAND "Invalid command, try with : STATUS, SET_ID, SET_PRIO, SET_TAG, FACTORY_RESET\r\n"
@@ -31,10 +41,6 @@ one sign -) and should feet in int16_t\r\n"
 #define FACTORY_RESET "FACTORY_RESET"
 
 
-extern volatile unsigned char   data[65];
-extern volatile unsigned char  command[65];
-extern volatile unsigned char  argument[65];
-
 struct config {
     uint32_t    magic_number; //4 octets
     uint32_t    node_id;      //4 octets
@@ -42,6 +48,18 @@ struct config {
     char        tag[33];      //33 octets
     uint16_t    crc;          //2 octets
 };                            //total 45 octets
+
+
+/*Parsing*/
+extern volatile unsigned char   data[65];
+extern volatile unsigned char  command[65];
+extern volatile unsigned char  argument[65];
+
+/*Config*/
+extern volatile uint8_t        current_slot;
+extern volatile uint8_t        is_configured;
+extern volatile uint8_t        corruption_detected;
+extern volatile struct config  current_config;
 
 /*uart.c*/
 void            uart_init(unsigned int ubrr);
@@ -53,9 +71,15 @@ void            print_adress_hexa(uint16_t adress);
 void            ft_putnbr(uint16_t n);
 
 
+/*crc.*/
+void            compute_crc(uint16_t *computed_crc, uint32_t *node_id, int16_t *prio, char *tag);
+
+
 /*eeprom.c*/
-unsigned char   read_eeprom(uint16_t adress);
-void            write_eeprom(uint16_t adress, uint8_t data);
+unsigned char   read_eeprom(uint16_t address);
+void            write_eeprom(uint16_t address, uint8_t data);
+void            read_block_eeprom(uint16_t start_address, uint16_t size, void *storage);
+void            load_config_from_eeprom(void);
 
 
 /*receive_data.c*/
@@ -77,6 +101,7 @@ uint8_t         ft_strcomp(const char *s1, const char *s2);
 uint8_t         ft_is_num(const char c);
 uint8_t         ft_is_alphanum(const char c);
 void            ft_trim(char *str);
+void            ft_memcopy(void *to_copy, void *dest, uint16_t size);
 
 
 /*manage_eeprom.c*/

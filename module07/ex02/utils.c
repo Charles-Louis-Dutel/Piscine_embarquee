@@ -89,3 +89,17 @@ void ft_trim(char *str)
         len--;
     }
 }
+
+
+void  ft_memcopy(void *to_copy, void *dest, uint16_t size)
+{
+    uint8_t     *ptr_to_copy = (uint8_t *)to_copy;
+    uint8_t     *ptr_dest = (uint8_t *)dest;
+    uint16_t    i = 0;
+
+    while (i < size)
+    {
+        ptr_dest[i] = ptr_to_copy[i];
+        i++;
+    }
+}

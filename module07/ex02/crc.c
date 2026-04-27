@@ -1,6 +1,6 @@
 #include "includes/main.h"
 
-uint16_t my_crc16_update(uint16_t __crc, uint8_t __data)
+static uint16_t my_crc16_update(uint16_t __crc, uint8_t __data)
 {
 	uint8_t __tmp;
 	uint16_t __ret;
@@ -34,4 +34,25 @@ uint16_t my_crc16_update(uint16_t __crc, uint8_t __data)
 		: "r0"
 	);
 	return __ret;
+}
+
+
+static void compute_crc_item(uint16_t *computed_crc, uint16_t size, void *storage)
+{
+	uint8_t		*ptr = (uint8_t *)storage;
+	uint16_t	i = 0;
+
+	while (i < size)
+	{
+		*computed_crc = my_crc16_update(*computed_crc, ptr[i]);
+		i++;
+	}
+}
+
+
+void compute_crc(uint16_t *computed_crc, uint32_t *node_id, int16_t *prio, char *tag)
+{
+	compute_crc_item(computed_crc, sizeof(*node_id), node_id);
+	compute_crc_item(computed_crc, sizeof(*prio), prio);
+	compute_crc_item(computed_crc, 33, tag);
 }
