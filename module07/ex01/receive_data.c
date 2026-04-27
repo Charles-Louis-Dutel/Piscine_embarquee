@@ -42,7 +42,9 @@ uint8_t check_data(void)
         if (space >= 1)
             len_after_space++;
 
-        if (data[i] == 32)
+        if (data[i] == 32 && i == 0)
+            return (0);
+        else if (data[i] == 32)
             space++;
 
         i++;
@@ -79,11 +81,12 @@ void store_data(void)
         i++;
     }
     octet_to_write[j] = '\0';
-    uart_printstr("adress_to_write : ");
-    uart_printstr((const char *)adress_to_write);
-    uart_printstr("\toctet_to_write : ");
-    uart_printstr((const char *)octet_to_write);
-    uart_printstr("\r\n");
+
+    // uart_printstr("adress_to_write : ");
+    // uart_printstr((const char *)adress_to_write);
+    // uart_printstr("\toctet_to_write : ");
+    // uart_printstr((const char *)octet_to_write);
+    // uart_printstr("\r\n");
 }
 
 
@@ -94,12 +97,14 @@ uint8_t convert_data(void)
     uint8_t     bitshift = 0;
     uint16_t    temp = 0;
 
+    octet_in_uint = 0;
+    adress_in_uint = 0;
     i = len - 1;
     while (i >= 0)
     {
         if (i < len - 3 && adress_to_write[i] != '0')
         {
-            uart_printstr("Adress is invalid 0\r\n");
+            uart_printstr("Address is invalid\r\n");
             return (0);
         }
         else if (i >= len - 3)
@@ -110,17 +115,17 @@ uint8_t convert_data(void)
             adress_in_uint |= temp;
             if (adress_in_uint > 1023)
             {
-                ft_putnbr(adress_in_uint);
-                uart_printstr("\r\n");
-                uart_printstr("Adress is invalid 1\r\n");
+                // ft_putnbr(adress_in_uint);
+                // uart_printstr("\r\n");
+                uart_printstr("Address is invalid\r\n");
                 return (0);
             }
         }
         i--;
     }
 
-    octet_in_uint += hexa_to_ui(octet_to_write[0]) * 16;
-    octet_in_uint += hexa_to_ui(octet_to_write[1]);
+    octet_in_uint = hexa_to_ui(octet_to_write[0]) << 4;
+    octet_in_uint |= hexa_to_ui(octet_to_write[1]);
     
     return (1);
 }

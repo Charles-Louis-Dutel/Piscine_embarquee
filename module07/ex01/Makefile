@@ -2,7 +2,7 @@ MCU=atmega328p
 CC=avr-gcc
 OBJCOPY=avr-objcopy
 
-SRC=main.c uart.c receive_data.c eeprom.c utils.c
+SRC=main.c uart.c receive_data.c eeprom.c utils.c manage_eeprom.c
 OBJ=$(SRC:.c=.o)
 
 F_CPU=16000000

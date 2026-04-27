@@ -9,42 +9,6 @@ volatile unsigned char  octet_to_write[3];
 volatile uint8_t        octet_in_uint;
 volatile uint16_t       adress_in_uint;
 
-void print_eeprom(void)
-{
-    uint16_t        i = 0;
-    uint8_t         octet = 0;
-    uint8_t         c = 0;
-    unsigned char   line[17];
-
-    uart_printstr("\r\n--- EEPROM DUMP ---\r\n");
-    while (i < 1024)
-    {
-        c = read_eeprom(i);
-
-        if (octet == 0)
-        {
-            print_adress_hexa(i);
-            uart_tx(' ');
-        }
-        if (c >= 32 && c <= 126)
-            line[octet] = c;
-        else
-            line[octet] = '.';
-        print_hex_value(c);
-        uart_tx(' ');
-        octet++;
-        if (octet == 16)
-        {
-            line[16] = '\0';
-            uart_tx('|');
-            uart_printstr((const char *)line);
-            uart_printstr("|\r\n");
-            octet = 0;
-        }
-        i++;
-    }
-}
-
 
 int main ()
 {
@@ -68,11 +32,18 @@ int main ()
             store_data();
             if (convert_data())
             {
-                uart_printstr("adress : ");
-                ft_putnbr(adress_in_uint);
-                uart_printstr("\toctet : ");
-                ft_putnbr(octet_in_uint);
-                uart_printstr("\r\n");
+                // uart_printstr("adress : ");
+                // ft_putnbr(adress_in_uint);
+                // uart_printstr("\toctet : ");
+                // ft_putnbr(octet_in_uint);
+                // uart_printstr("\r\n");
+
+                if (!check_octet_eeprom())
+                {
+                    // uart_printstr("Octet different, on va le changer\r\n");
+                    write_eeprom(adress_in_uint, octet_in_uint);
+                    print_eeprom_with_red(adress_in_uint, octet_in_uint);
+                }
             }
         }
         uart_printstr("\r\n");

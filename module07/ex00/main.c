@@ -26,7 +26,7 @@ void print_eeprom(void)
     uint8_t         c = 0;
     unsigned char   line[17];
 
-    uart_printstr("\r\n--- EEPROM DUMP ---\r\n");
+    //uart_printstr("\r\n--- EEPROM DUMP ---\r\n");
     while (i < 1024)
     {
         c = read_eeprom(i);

@@ -31,6 +31,7 @@ void            ft_putnbr(uint16_t n);
 
 /*eeprom.c*/
 unsigned char   read_eeprom(uint16_t adress);
+void            write_eeprom(uint16_t adress, uint8_t data);
 
 
 /*receive_data.c*/
@@ -45,5 +46,11 @@ uint8_t         ft_is_print(unsigned char c);
 uint8_t         ft_is_hexa(unsigned char c);
 uint8_t         ft_strlen(const char *str);
 uint8_t         hexa_to_ui(unsigned char c);
+
+
+/*manage_eeprom.c*/
+void            print_eeprom(void);
+void            print_eeprom_with_red(uint16_t adress, uint8_t octet_value);
+uint8_t         check_octet_eeprom(void);
 
 
