@@ -100,6 +100,32 @@ static uint8_t parse_reset_arg(void)
         uart_printstr(FACTORY_RESET_ARG_ERROR);
         return (0);
     }
+    return (factory_reset_command());
+}
+
+
+static uint8_t parse_corrupted_demo_arg(void)
+{
+    ft_trim((char *)argument);
+    if (argument[0] != '\0')
+    {
+        uart_printstr(WRITE_CORRUPTED_ARG_ERROR);
+        return (0);
+    }
+    simulate_fail = 1;
+    return (1);
+}
+
+
+static uint8_t all_fail_demo_arg(void)
+{
+    ft_trim((char *)argument);
+    if (argument[0] != '\0')
+    {
+        uart_printstr(ALL_FAIL_ARG_ERROR);
+        return (0);
+    }
+    simulate_all_fail = 1;
     return (1);
 }
 
@@ -116,6 +142,10 @@ uint8_t  check_command(void)
         return (parse_tag_arg());
     else if (ft_strcomp(FACTORY_RESET, (const char *)command))
         return (parse_reset_arg());
+    else if (ft_strcomp(WRITE_CORRUPTED_DEMO, (const char *)command))
+        return (parse_corrupted_demo_arg());
+    else if (ft_strcomp(ALL_FAIL_DEMO, (const char *)command))
+        return (all_fail_demo_arg());
     uart_printstr(INVALID_COMMAND);
     return (0);
 }

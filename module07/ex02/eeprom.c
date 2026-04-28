@@ -50,7 +50,7 @@ void read_block_eeprom(uint16_t start_address, uint16_t size, void *storage)
 
 void load_config_from_eeprom(void)
 {
-    uint8_t     slot = 0;
+    uint8_t     slot = SLOT_1;
     uint16_t    address;
     uint32_t    magic;
     uint32_t    node_id;
@@ -60,9 +60,9 @@ void load_config_from_eeprom(void)
     uint16_t    computed_crc;
 
 
-    while (slot < 4)
+    while (slot <= 4)
     {
-        address = SLOT_0_ADDR + slot * SLOT_SIZE;
+        address = SLOT_1_ADDR + (slot - 1) * SLOT_SIZE;
         computed_crc = 0xFFFF;
         read_block_eeprom(address, sizeof(magic), &magic);
         if (magic == MAGIC)

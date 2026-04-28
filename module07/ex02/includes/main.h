@@ -7,6 +7,8 @@
 #endif
 
 #define UART_BAUDRATE 115200
+#define SUCCESS 1
+#define FAIL 0
 
 /*Parse*/
 #define HEXA "0123456789ABCDEF"
@@ -17,10 +19,14 @@
 
 /*CONFIG*/
 #define SLOT_SIZE 64
-#define SLOT_0_ADDR 0
-#define SLOT_1_ADDR 64
-#define SLOT_2_ADDR 128
-#define SLOT_3_ADDR 192
+#define SLOT_1 1
+#define SLOT_1_ADDR 0
+#define SLOT_2 2
+#define SLOT_2_ADDR 64
+#define SLOT_3 3
+#define SLOT_3_ADDR 128
+#define SLOT_4 4
+#define SLOT_4_ADDR 192
 #define MAGIC 0x42CACA07
 
 
@@ -35,6 +41,9 @@ one sign -) and should feet in int16_t\r\n"
 #define TAG_ARG_ERROR_1 "SET_TAG argument should be between double quotes \"\"\r\n"
 #define TAG_ARG_ERROR_2 "SET_TAG argument charachters should be alphanum, _ or -\r\n"
 #define FACTORY_RESET_ARG_ERROR "FACTORY_RESET doesn't need argument\r\n"
+#define FACTORY_RESET_FAIL "Corruption detected.\r\nFactory reset failed\r\n"
+#define WRITE_CORRUPTED_ARG_ERROR "WRITE_CORRUPTED_DEMO doesn't need argument\r\n"
+#define ALL_FAIL_ARG_ERROR "ALL_FAIL_DEMO doesn't need argument\r\n"
 
 /*COMMANDS*/
 #define STATUS "STATUS"
@@ -42,9 +51,11 @@ one sign -) and should feet in int16_t\r\n"
 #define SET_PRIO "SET_PRIO"
 #define SET_TAG "SET_TAG"
 #define FACTORY_RESET "FACTORY_RESET"
+#define WRITE_CORRUPTED_DEMO "WRITE_CORRUPTED_DEMO"
+#define ALL_FAIL_DEMO "ALL_FAIL_DEMO"
 
 
-struct config {
+struct __attribute__((packed)) config {
     uint32_t    magic_number; //4 octets
     uint32_t    node_id;      //4 octets
     int16_t     priority;     //2 octets
@@ -62,6 +73,8 @@ extern volatile unsigned char  argument[65];
 extern volatile uint8_t        current_slot;
 extern volatile uint8_t        is_configured;
 extern volatile uint8_t        corruption_detected;
+extern volatile uint8_t        simulate_fail;
+extern volatile uint8_t        simulate_all_fail;
 extern volatile struct config  current_config;
 
 /*uart.c*/
@@ -78,11 +91,16 @@ void            ft_putnbr(int64_t n);
 void compute_crc(volatile uint16_t *computed_crc, volatile uint32_t *node_id,
                 volatile int16_t *prio, volatile char *tag);
 
+
 /*eeprom.c*/
 unsigned char   read_eeprom(uint16_t address);
 void            write_eeprom(uint16_t address, uint8_t data);
 void            read_block_eeprom(uint16_t start_address, uint16_t size, void *storage);
 void            load_config_from_eeprom(void);
+
+
+/*write_config.c*/
+uint8_t         save_config(void);
 
 
 /*receive_data.c*/
@@ -101,6 +119,7 @@ uint8_t         status_command(void);
 uint8_t         set_id_command(void);
 uint8_t         set_priority_command(void);
 uint8_t         set_tag_command(void);
+uint8_t         factory_reset_command(void);
 
 
 /*utils.c*/
@@ -119,7 +138,5 @@ void            ft_copy_and_fill_0(char *dest, char *to_copy, uint8_t size);
 
 /*manage_eeprom.c*/
 void            print_eeprom(void);
-void            print_eeprom_with_red(uint16_t adress, uint8_t octet_value);
-uint8_t         check_octet_eeprom(void);
 
 

@@ -72,3 +72,40 @@ uint8_t set_tag_command(void)
 
     return (1);
 }
+
+
+uint8_t factory_reset_command(void)
+{
+    uint16_t    current_slot_addres = SLOT_1_ADDR + (current_slot - 1) * SLOT_SIZE;
+    uint16_t    i = 0;
+    uint8_t     readed_octet;
+
+    if (is_configured == 0)
+        return (1);
+
+    while (i < sizeof(current_config.magic_number))
+    {
+        readed_octet = read_eeprom(current_slot_addres);
+        if (readed_octet != 0x00)
+        {
+            write_eeprom(current_slot_addres, 0x00);
+            readed_octet = read_eeprom(current_slot_addres);
+            if (readed_octet != 0x00)
+            {
+                uart_printstr(FACTORY_RESET_FAIL);
+                return (0);
+            }
+        }
+        i++;
+        current_slot_addres++;
+    }
+    is_configured = 0;
+    corruption_detected = 0;
+    current_config.magic_number = 0;
+    current_config.node_id = 0;
+    current_config.priority = 0;
+    ft_copy_and_fill_0((char *)current_config.tag, "Unconfigured", 33);
+    current_slot = SLOT_1;
+    uart_printstr("Done.\r\n");
+    return (1);
+}
