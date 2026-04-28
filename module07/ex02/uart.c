@@ -65,7 +65,8 @@ void ft_putnbr(int64_t n)
 {
     if (n < 0)
     {
-
+        uart_tx('-');
+        n *= -1;
     }
     if (n >= 0 && n <= 9)
         uart_tx(n + '0');

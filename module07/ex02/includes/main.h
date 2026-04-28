@@ -75,8 +75,8 @@ void            ft_putnbr(int64_t n);
 
 
 /*crc.*/
-void            compute_crc(uint16_t *computed_crc, uint32_t *node_id, int16_t *prio, char *tag);
-
+void compute_crc(volatile uint16_t *computed_crc, volatile uint32_t *node_id,
+                volatile int16_t *prio, volatile char *tag);
 
 /*eeprom.c*/
 unsigned char   read_eeprom(uint16_t address);

@@ -18,7 +18,6 @@ int main ()
 
     uart_init(ubrr);
     load_config_from_eeprom();
-    //print_eeprom();
 
     while (1)
     {

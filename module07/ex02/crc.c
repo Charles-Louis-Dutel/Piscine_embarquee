@@ -37,7 +37,7 @@ static uint16_t my_crc16_update(uint16_t __crc, uint8_t __data)
 }
 
 
-static void compute_crc_item(uint16_t *computed_crc, uint16_t size, void *storage)
+static void compute_crc_item(volatile uint16_t *computed_crc, uint16_t size, volatile void *storage)
 {
 	uint8_t		*ptr = (uint8_t *)storage;
 	uint16_t	i = 0;
@@ -50,7 +50,8 @@ static void compute_crc_item(uint16_t *computed_crc, uint16_t size, void *storag
 }
 
 
-void compute_crc(uint16_t *computed_crc, uint32_t *node_id, int16_t *prio, char *tag)
+void compute_crc(volatile uint16_t *computed_crc, volatile uint32_t *node_id,
+	volatile int16_t *prio, volatile char *tag)
 {
 	compute_crc_item(computed_crc, sizeof(*node_id), node_id);
 	compute_crc_item(computed_crc, sizeof(*prio), prio);

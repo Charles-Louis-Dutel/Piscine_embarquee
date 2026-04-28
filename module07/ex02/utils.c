@@ -118,7 +118,7 @@ uint8_t ft_atoi(const char *str, uint8_t mode)
     }
     while (str[i])
     {
-        n *= 10 + (str[i] - '0');
+        n = n * 10 + (str[i] - '0');
         if (mode == UINT32 && n > UINT32_MAX)
             return (0);
         else if (mode == INT16 && (n < INT16_MIN || n > INT16_MAX))
