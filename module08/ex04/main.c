@@ -12,7 +12,6 @@ volatile uint8_t    led_colors[3][4] = {
 
 void init_interrupt(void)
 {
-    ADCSRA |= (1 << ADIE);
     TIMSK1 |= (1 << OCIE1A);
 
     SREG |= (1 << SREG_I);

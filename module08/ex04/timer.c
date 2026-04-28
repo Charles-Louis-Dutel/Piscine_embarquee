@@ -17,7 +17,7 @@ void init_timer1(void)
 {
     TCCR1B |= (1 << WGM12);
 
-    OCR1A = (F_CPU / PRESCALER_DIV) * 0.01;
+    OCR1A = (F_CPU / PRESCALER_DIV) * 0.01 - 1;
 }
 
 
