@@ -146,16 +146,21 @@ uint8_t ft_atoi(const char *str, uint8_t mode)
 void ft_copy_and_fill_0(char *dest, char *to_copy, uint8_t size)
 {
     uint8_t i = 0;
+    uint8_t j = 0;
     uint8_t len_to_copy = ft_strlen(to_copy);
 
     while (i < len_to_copy)
     {
-        dest[i] = to_copy[i];
+        if (to_copy[i] != '"')
+        {
+            dest[j] = to_copy[i];
+            j++;
+        }
         i++;
     }
-    while (i < size)
+    while (j < size)
     {
-        dest[i] = '\0';
-        i++;
+        dest[j] = '\0';
+        j++;
     }
 }

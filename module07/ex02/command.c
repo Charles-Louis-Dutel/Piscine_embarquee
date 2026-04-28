@@ -24,6 +24,7 @@ uint8_t status_command(void)
         uart_printstr("\r\nTag: ");
         uart_printstr((const char *)current_config.tag);
         uart_printstr("\r\n");
+        
         return (1);
     }
     else if (corruption_detected == 1)
@@ -44,7 +45,6 @@ uint8_t set_id_command(void)
         return (0);
     }
     compute_crc(&current_config.crc, &current_config.node_id, &current_config.priority, current_config.tag);
-    is_configured = 1;
     
     return (1);
 }
@@ -58,7 +58,6 @@ uint8_t set_priority_command(void)
         return (0);
     }
     compute_crc(&current_config.crc, &current_config.node_id, &current_config.priority, current_config.tag);
-    is_configured = 1;
 
     return (1);
 }
@@ -70,7 +69,6 @@ uint8_t set_tag_command(void)
         create_default_config();
     ft_copy_and_fill_0((char *)current_config.tag, (char *)argument, 33);
     compute_crc(&current_config.crc, &current_config.node_id, &current_config.priority, current_config.tag);
-    is_configured = 1;
 
     return (1);
 }

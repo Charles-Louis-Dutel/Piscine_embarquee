@@ -53,6 +53,8 @@ static void compute_crc_item(volatile uint16_t *computed_crc, uint16_t size, vol
 void compute_crc(volatile uint16_t *computed_crc, volatile uint32_t *node_id,
 	volatile int16_t *prio, volatile char *tag)
 {
+	*computed_crc = 0xFFFF;
+
 	compute_crc_item(computed_crc, sizeof(*node_id), node_id);
 	compute_crc_item(computed_crc, sizeof(*prio), prio);
 	compute_crc_item(computed_crc, 33, tag);
