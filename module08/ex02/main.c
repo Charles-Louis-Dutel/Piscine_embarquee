@@ -2,8 +2,6 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
-#define RED [0xE1, 0x00, 0x00, 0xFF]
-
 void SPI_master_init(void)
 {
     //(p.172)
