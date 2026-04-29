@@ -21,6 +21,12 @@ void TIMER1_COMPA_vect(void)
     }
     else if (active_switch == SWITCH_1 && state_sw1 == UNPRESSED)
     {
+        if (active_color == BLUE)
+            uart_printstr("BLUE\r\n\r\n");
+        else if (active_color == GREEN)
+            uart_printstr("GREEN\r\n\r\n");
+        else if(active_color == RED)
+            uart_printstr("RED\r\n\r\n");
         //Active l'interrupt du bouton en mode falling edge
         EICRA = (1 << ISC01);
     }

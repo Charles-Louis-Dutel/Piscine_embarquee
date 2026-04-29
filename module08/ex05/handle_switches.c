@@ -8,12 +8,6 @@ void INT0_vect(void)
     else if (state_sw1 == PRESSED)
     {
         state_sw1 = 0;
-        if (active_color == BLUE)
-            uart_printstr("BLUE\r\n\r\n");
-        else if (active_color == GREEN)
-            uart_printstr("GREEN\r\n\r\n");
-        else if(active_color == RED)
-            uart_printstr("RED\r\n\r\n");
     }
     //Desactive interrupt des boutons
     EIMSK = 0;
@@ -23,7 +17,7 @@ void INT0_vect(void)
     //Clear le flag du timer
     TIFR1 |= (1 << OCF1A);
     //Lance le timer
-    TCCR1B |= (1 << CS10) | (1 << CS11);    
+    TCCR1B |= (1 << CS10) | (1 << CS11);
 }
 
 
