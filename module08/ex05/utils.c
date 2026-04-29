@@ -96,3 +96,25 @@ void ft_copy_and_fill_0(char *dest, char *to_copy, uint8_t size)
         j++;
     }
 }
+
+
+void ft_copy_table(uint8_t mode)
+{
+    uint8_t i = 0;
+    uint8_t j = 0;
+
+    while (i < 3)
+    {
+        j = 0;
+        while (j < 4)
+        {
+            if (mode == 0)
+                led_colors[i][j] = led_colors_select[i][j];
+            else
+                led_colors_select[i][j] = led_colors[i][j];
+            j++;
+        }
+        i++;
+    }
+
+}

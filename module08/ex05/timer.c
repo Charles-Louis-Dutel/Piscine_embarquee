@@ -11,7 +11,7 @@ void TIMER1_COMPA_vect(void)
 
     if (active_switch == SWITCH_1 && state_sw1 == PRESSED)
     {
-        old_color_value = led_colors[active_led][active_color];
+        ft_copy_table(0);
         full_SPI_frame();
         active_color++;
         if (active_color == 4)
@@ -21,17 +21,13 @@ void TIMER1_COMPA_vect(void)
     }
     else if (active_switch == SWITCH_1 && state_sw1 == UNPRESSED)
     {
-        if (active_color == BLUE)
-            uart_printstr("BLUE\r\n\r\n");
-        else if (active_color == GREEN)
-            uart_printstr("GREEN\r\n\r\n");
-        else if(active_color == RED)
-            uart_printstr("RED\r\n\r\n");
         //Active l'interrupt du bouton en mode falling edge
         EICRA = (1 << ISC01);
     }
     else if (active_switch == SWITCH_2 && state_sw2 == PRESSED)
     {
+        ft_copy_table(1);
+        full_SPI_frame();
         active_led++;
         if (active_led == 4)
             active_led = D6;

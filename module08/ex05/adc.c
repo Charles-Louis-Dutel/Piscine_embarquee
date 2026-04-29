@@ -5,8 +5,8 @@ void ADC_vect(void)
 {
     uint8_t value = ADCH;
 
-    led_colors[active_led][active_color] = value;
-    full_SPI_frame();
+    led_colors_select[active_led][active_color] = value;
+    full_SPI_frame_select();
 }
 
 

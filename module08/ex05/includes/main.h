@@ -35,6 +35,7 @@ extern volatile uint8_t active_color;
 extern volatile uint8_t old_color_value;
 extern volatile uint8_t active_led;
 extern volatile uint8_t led_colors[3][4];
+extern volatile uint8_t led_colors_select[3][4];
 
 void ADC_vect(void) __attribute__((signal));
 void INT0_vect(void) __attribute__((signal));
@@ -46,6 +47,7 @@ void TIMER1_COMPA_vect(void) __attribute__((signal));
 void            SPI_master_init(void);
 void            SPI_frame(uint8_t brightness, uint8_t b, uint8_t g, uint8_t r);
 void            full_SPI_frame(void);
+void            full_SPI_frame_select(void);
 
 
 /*receive_data.c*/
@@ -61,16 +63,12 @@ uint8_t         ft_strlen(const char *str);
 void            ft_trim(char *str);
 uint8_t         ft_strcomp(const char *s1, const char *s2);
 uint8_t         hexa_to_ui(unsigned char c);
-
+void            ft_copy_table(uint8_t mode);
 
 /*timer.c*/
 void            init_timer1(void);
 void            activate_timer(void);
 void            desactivate_timer(void);
-
-
-/*rgb.c*/
-void            wheel(uint8_t pos);
 
 
 /*handle_switches.c*/
@@ -80,8 +78,4 @@ void            init_switch(void);
 /*adc.c*/
 void            init_adc(void);
 
-
-/*uart.c*/
-void            uart_init(unsigned int ubrr);
-void            uart_printstr(const char *str);
 

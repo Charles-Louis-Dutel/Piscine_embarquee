@@ -2,7 +2,7 @@ MCU=atmega328p
 CC=avr-gcc
 OBJCOPY=avr-objcopy
 
-SRC=main.c spi.c utils.c timer.c adc.c handle_switches.c uart.c
+SRC=main.c spi.c utils.c timer.c adc.c handle_switches.c
 OBJ=$(SRC:.c=.o)
 
 F_CPU=16000000

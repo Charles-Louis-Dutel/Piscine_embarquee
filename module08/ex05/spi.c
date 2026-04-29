@@ -60,3 +60,22 @@ void full_SPI_frame(void)
     //END frame
     SPI_frame(0xFF, 0xFF, 0xFF, 0xFF);
 }
+
+
+void full_SPI_frame_select(void)
+{
+    //START frame
+    SPI_frame(0x00, 0x00, 0x00, 0x00);
+
+    //D6
+    SPI_frame(led_colors_select[0][0], led_colors_select[0][1], led_colors_select[0][2], led_colors_select[0][3]);
+
+    //D7
+    SPI_frame(led_colors_select[1][0], led_colors_select[1][1], led_colors_select[1][2], led_colors_select[1][3]);
+    
+    //D8
+    SPI_frame(led_colors_select[2][0], led_colors_select[2][1], led_colors_select[2][2], led_colors_select[2][3]);
+
+    //END frame
+    SPI_frame(0xFF, 0xFF, 0xFF, 0xFF);
+}
