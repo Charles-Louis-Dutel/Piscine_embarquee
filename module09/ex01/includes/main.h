@@ -46,9 +46,3 @@ uint8_t         i2c_read(void);
 void            expander_pca955_write(uint8_t command, uint8_t data);
 uint8_t         expander_pca955_read(uint8_t reg_to_read);
 
-
-/*uart.c*/
-void            uart_init(unsigned int ubrr);
-void            uart_tx(const char c);
-void            uart_printstr(const char *str);
-void            ft_putnbr(uint16_t n);
