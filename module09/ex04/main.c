@@ -55,12 +55,12 @@ int main()
 
         expander_pca955_write(OUTPUT_PORT_1, (0xFF & ~(TWO)));
         expander_pca955_write(OUTPUT_PORT_0, (0xFF & ~(0b10000000)));
-        _delay_ms(5);
+        _delay_ms(1);
 
         expander_pca955_write(OUTPUT_PORT_0, (0xFF & ~(0b00000000)));
 
         expander_pca955_write(OUTPUT_PORT_1, (0xFF & ~(FOUR)));
         expander_pca955_write(OUTPUT_PORT_0, (0xFF & ~(0b01000000)));
-        _delay_ms(5);
+        _delay_ms(1);
     }
 }

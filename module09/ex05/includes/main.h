@@ -5,6 +5,7 @@
  #define F_CPU 16000000
 #endif
 
+#define PRESCALER_DIV 1024
 #define UART_BAUDRATE 115200
 #define SCL_FREQUENCY 100000
 #define PRESCALER 1
@@ -45,6 +46,12 @@
 #define NINE 0b10010000
 
 
+extern volatile uint16_t   count;
+
+
+void TIMER1_COMPA_vect(void) __attribute__((signal));
+
+
 /*i2c.c*/
 void            i2c_init(void);
 void            i2c_start(uint8_t mode);
@@ -58,8 +65,5 @@ void            expander_pca955_write(uint8_t command, uint8_t data);
 uint8_t         expander_pca955_read(uint8_t reg_to_read);
 
 
-/*uart.c*/
-void            uart_init(unsigned int ubrr);
-void            uart_tx(const char c);
-void            uart_printstr(const char *str);
-void            ft_putnbr(uint16_t n);
+/*timer.c*/
+void            init_timer(void);
