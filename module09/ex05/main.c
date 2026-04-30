@@ -1,6 +1,6 @@
 #include "includes/main.h"
 
-volatile uint16_t   count = 0;
+volatile uint16_t   count = 9995;
 
 void init_interrupt(void)
 {
@@ -8,6 +8,19 @@ void init_interrupt(void)
 
     SREG = (1 << SREG_I);
 }
+
+void expander_init()
+{
+    expander_pca955_write(POLARITY_PORT_0, 0x00);
+    expander_pca955_write(POLARITY_PORT_1, 0x00);
+
+    expander_pca955_write(OUTPUT_PORT_0, 0xFF);
+    expander_pca955_write(OUTPUT_PORT_1, 0xFF);
+
+    expander_pca955_write(CONFIG_PORT_0, (0xFF & ~(0b11110000)));
+    expander_pca955_write(CONFIG_PORT_1, 0x00);
+}
+
 
 void display_number(uint8_t n)
 {
@@ -51,15 +64,12 @@ void display_number(uint8_t n)
 
 int main()
 {
-    unsigned int    ubrr = (F_CPU / (8 * UART_BAUDRATE)) - 1;
-
-    uart_init(ubrr);
     i2c_init();
+    expander_init();
     init_interrupt();
     
 
-    expander_pca955_write(CONFIG_PORT_0, (0xFF & ~(0b11110000)));
-    expander_pca955_write(CONFIG_PORT_1, 0x00);
+
     
     init_timer();
     while (1)

@@ -1,6 +1,19 @@
 #include "includes/main.h"
 
 
+void expander_init()
+{
+    expander_pca955_write(POLARITY_PORT_0, 0x00);
+    expander_pca955_write(POLARITY_PORT_1, 0x00);
+
+    expander_pca955_write(OUTPUT_PORT_0, 0xFF);
+    expander_pca955_write(OUTPUT_PORT_1, 0xFF);
+
+    expander_pca955_write(CONFIG_PORT_0, (0xFF & ~(0b10000000)));
+    expander_pca955_write(CONFIG_PORT_1, 0x00);
+}
+
+
 void display_number(uint8_t n)
 {
     switch (n)
@@ -46,9 +59,7 @@ int main()
     uint8_t n = 0;
 
     i2c_init();
-
-    expander_pca955_write(CONFIG_PORT_0, (0xFF & ~(0b10000000)));
-    expander_pca955_write(CONFIG_PORT_1, 0x00);
+    expander_init();
     
     expander_pca955_write(OUTPUT_PORT_0, (0xFF & ~(0b10000000)));
     
