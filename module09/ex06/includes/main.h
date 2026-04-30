@@ -49,7 +49,7 @@
 extern volatile uint16_t   count;
 
 
-void TIMER1_COMPA_vect(void) __attribute__((signal));
+void ADC_vect(void) __attribute__((signal));
 
 
 /*i2c.c*/
@@ -72,5 +72,6 @@ void            uart_printstr(const char *str);
 void            ft_putnbr(uint16_t n);
 
 
-/*timer.c*/
-void            init_timer(void);
+/*adc.c*/
+void            init_adc(void);
+

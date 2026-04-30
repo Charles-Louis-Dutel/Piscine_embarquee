@@ -4,7 +4,7 @@ volatile uint16_t   count = 0;
 
 void init_interrupt(void)
 {
-    TIMSK1 |= (1 << OCIE1A);
+    ADCSRA |= (1 << ADIE);
 
     SREG = (1 << SREG_I);
 }
@@ -51,17 +51,13 @@ void display_number(uint8_t n)
 
 int main()
 {
-    unsigned int    ubrr = (F_CPU / (8 * UART_BAUDRATE)) - 1;
-
-    uart_init(ubrr);
+    init_adc();
     i2c_init();
     init_interrupt();
-    
 
     expander_pca955_write(CONFIG_PORT_0, (0xFF & ~(0b11110000)));
     expander_pca955_write(CONFIG_PORT_1, 0x00);
     
-    init_timer();
     while (1)
     {
         
@@ -70,27 +66,27 @@ int main()
         //digit 1
         display_number(count % 10);
         expander_pca955_write(OUTPUT_PORT_0, (0xFF & ~(0b10000000)));
-        _delay_ms(1);
+        //_delay_ms(1);
 
         expander_pca955_write(OUTPUT_PORT_0, (0xFF & ~(0b00000000)));
 
         //digit 2
         display_number((count / 10) % 10);
         expander_pca955_write(OUTPUT_PORT_0, (0xFF & ~(0b01000000)));
-       _delay_ms(1);
+       //_delay_ms(1);
 
         expander_pca955_write(OUTPUT_PORT_0, (0xFF & ~(0b00000000)));
 
         //digit 3
         display_number((count / 100) % 10);
         expander_pca955_write(OUTPUT_PORT_0, (0xFF & ~(0b00100000)));
-        _delay_us(1);
+        //_delay_us(1);
 
         expander_pca955_write(OUTPUT_PORT_0, (0xFF & ~(0b00000000)));
 
         //digit 4
         display_number((count / 1000) % 10);
         expander_pca955_write(OUTPUT_PORT_0, (0xFF & ~(0b00010000)));
-        _delay_us(1);
+        //_delay_us(1);
     }
 }
