@@ -9,4 +9,5 @@ void expander_pca955_write(uint8_t command, uint8_t data)
     //Data byte
     i2c_write(data);
     i2c_stop();
+    _delay_us(10);
 }

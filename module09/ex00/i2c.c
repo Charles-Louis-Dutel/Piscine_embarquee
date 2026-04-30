@@ -3,6 +3,8 @@
 
 void i2c_init(void)
 {
+    PORTC |= (1 << PC4) | (1 << PC5);
+
     TWSR = 0;
     //Formule pour calculer SCL frequency = F_CPU/(16+2(TWBR)*(Prescaler div)) (p.222)
     //Donc TWBR = (F_CPU/SCL-16)/(2*Prescaler)
@@ -53,7 +55,7 @@ void i2c_write(uint8_t data)
 {
     TWDR = data;
 
-    TWCR = (1 << TWINT) | (1 << TWEN);
+    TWCR = (1 << TWINT) | (1 << TWEN) | (1 <<TWEA) ;
 
     while (!(TWCR & (1 << TWINT)))
         ;
