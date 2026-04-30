@@ -1,8 +1,5 @@
 #include "includes/main.h"
 
-volatile uint8_t count = 0;
-
-
 int main()
 {
     i2c_init();
